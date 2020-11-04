@@ -1,25 +1,31 @@
 // home 模块路由
 
-const NewsRoute = {
+const HomeRoute = {
   // 注意：返回的格式是一个对象，不是一个数组！！
   path: "/",
-  component: () => import("@/views/news/index.vue"),
+  name: "Home",
+  component: () => import("../../views/home/index.vue"),
+  redirect: "/user",
   children: [
-    {
-      path: "",
-      redirect: "user" // 进入home页面时，默认加载user页面
-    },
     {
       path: "user",
       name: "User",
       component: () =>
         import(/* webpackChunkName: "user" */ "../../views/user/index.vue"),
       meta: {
-        title: "网页标题",
-        keepAlive: true // 需要被缓存
+        title: "user页面"
+      }
+    },
+    {
+      path: "news",
+      name: "News",
+      component: () =>
+        import(/* webpackChunkName: "news" */ "../../views/news/index.vue"),
+      meta: {
+        title: "new页面"
       }
     }
   ]
 };
 
-export default NewsRoute;
+export default HomeRoute;

@@ -1,20 +1,19 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Home from "./modules/home";
+import Home from "./modules/home.js";
 
 Vue.use(VueRouter);
 
 const routes = [
-  ...Home,
+  Home,
   {
-    path: "login",
+    path: "/login",
     name: "Login",
     component: () =>
       import(/* webpackChunkName: "login" */ "../views/login/index.vue"),
     meta: {
-      title: "网页标题",
-      keepAlive: true // 需要被缓存
+      title: "登录页面"
     }
   },
   {
@@ -38,6 +37,12 @@ const router = new VueRouter({
   }
 });
 
+// 重写push方法，解决push当前页报错
+const routerPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return routerPush.call(this, location).catch(error => error);
+};
+
 // 前置路由守卫--可用于登录页跳转
 router.beforeEach((to, from, next) => {
   // console.log('to', to)
@@ -48,7 +53,7 @@ router.beforeEach((to, from, next) => {
   document.title = to.meta.title || "默认网站标题";
   next();
 
-  next();
+  // next();
 });
 
 export default router;
