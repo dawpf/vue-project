@@ -1,4 +1,8 @@
 const path = require("path");
+const px2rem = require("postcss-px2rem");
+const postcss = px2rem({
+  remUnit: 16 //基准大小 baseSize，需要和rem.js中相同(不做更改)
+});
 
 module.exports = {
   // 默认输出的路径 就是在当前地址栏后面添加的路径 若为 'ccc' ，则为 http://localhost:8085/ccc/
@@ -37,6 +41,14 @@ module.exports = {
         "@a": path.resolve(__dirname, "./src/assets"),
         "@c": path.resolve(__dirname, "./src/components"),
         "@u": path.resolve(__dirname, "./src/utils")
+      }
+    }
+  },
+  css: {
+    // 移动端自适应:css 配置
+    loaderOptions: {
+      postcss: {
+        plugins: [postcss]
       }
     }
   }
